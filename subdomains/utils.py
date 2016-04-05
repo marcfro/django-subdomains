@@ -12,7 +12,7 @@ def current_site_domain(request=None):
     try:
         from tld import get_tld
         domain = get_tld('http://' + request.get_host())
-    except ImportError:
+    except Exception:
         from django.contrib.sites.models import Site
         domain = Site.objects.get_current(request=request).domain
 
