@@ -10,8 +10,11 @@ from django.core.urlresolvers import reverse as simple_reverse
 
 def current_site_domain(request=None):
     try:
-        from tld import get_tld
-        domain = get_tld('http://' + request.get_host())
+        if request:
+            from tld import get_tld
+            domain = get_tld('http://' + request.get_host())
+        else:
+            domain = settings.SUBDOMAIN_BASE_DOMAIN
     except Exception:
         from django.contrib.sites.models import Site
         try:
