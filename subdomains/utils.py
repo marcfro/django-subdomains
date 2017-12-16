@@ -19,14 +19,17 @@ def current_site_domain(request=None):
         from django.contrib.sites.models import Site
         try:
             if request:
-                domain = Site.objects.get_current(request=request).domain
+                d = Site.objects.get_current(request=request).domain
             else:
                 d = Site.objects.first().domain
-                if d[0:4] != 'http':
-                    d = 'http://' + d
-                domain = get_tld(d)
+            if d[0:4] != 'http':
+                d = 'http://' + d
+            domain = get_tld(d)
         except Exception:
-            domain = Site.objects.first().domain
+            try:
+                domain = settings.SUBDOMAIN_BASE_DOMAIN
+            except Exception:
+                domain = Site.objects.first().domain
 
     prefix = 'www.'
     if getattr(settings, 'REMOVE_WWW_FROM_DOMAIN', False) \
