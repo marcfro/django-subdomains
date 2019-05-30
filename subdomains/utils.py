@@ -11,8 +11,8 @@ from django.core.urlresolvers import reverse as simple_reverse
 def current_site_domain(request=None):
     try:
         if request:
-            from tld import get_tld
-            domain = get_tld('http://' + request.get_host())
+            from tld import get_fld
+            domain = get_fld('http://' + request.get_host())
         else:
             domain = settings.SUBDOMAIN_BASE_DOMAIN
     except Exception:
@@ -24,7 +24,7 @@ def current_site_domain(request=None):
                 d = Site.objects.first().domain
             if d[0:4] != 'http':
                 d = 'http://' + d
-            domain = get_tld(d)
+            domain = get_fld(d)
         except Exception:
             try:
                 domain = settings.SUBDOMAIN_BASE_DOMAIN
