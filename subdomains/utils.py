@@ -5,7 +5,10 @@ except ImportError:
     from urllib.parse import urlunparse
 
 from django.conf import settings
-from django.core.urlresolvers import reverse as simple_reverse
+try:
+    from django.core.urlresolvers import reverse as simple_reverse
+except ImportError:
+    from django.urls import reverse as simple_reverse
 
 
 def current_site_domain(request=None):
@@ -37,6 +40,7 @@ def current_site_domain(request=None):
         domain = domain.replace(prefix, '', 1)
 
     return domain
+
 
 get_domain = current_site_domain
 
